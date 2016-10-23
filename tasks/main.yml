@@ -8,6 +8,13 @@
   ghq:
     name: "{{remote_repository_path}}"
     executable: "{{tmux_conf_ghq_executable}}"
+- name: Check existing ~/.tmux.conf
+  stat:
+    path: "{{ansible_env.HOME}}/.tmux.conf"
+  register: st
+- name: Back up ~/.tmux.conf
+  shell: "mv {{ansible_env.HOME}}/.tmux.conf {{ansible_env.HOME}}/.tmux.conf.{{ansible_date_time.date}}-{{ansible_date_time.hour}}-{{ansible_date_time.minute}}-{{ansible_date_time.second}}"
+  when: st.stat.exists and not st.stat.islnk
 - name: Make symbolic links
   file:
     src: "{{ghq_root.stdout}}/github.com/{{remote_repository_path}}/.tmux.conf"
