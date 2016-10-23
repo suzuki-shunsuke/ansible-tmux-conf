@@ -1,0 +1,3 @@
+---
+# defaults file for tmux-conf
+tmux_conf_ghq_executable: ghq

@@ -1,0 +1,15 @@
+---
+# tasks file for tmux-conf
+- name: ghq root
+  shell: "{{tmux_conf_ghq_executable}} root"
+  register: ghq_root
+  changed_when: false
+- name: Clone tmux config repository
+  ghq:
+    name: "{{remote_repository_path}}"
+    executable: "{{tmux_conf_ghq_executable}}"
+- name: Make symbolic links
+  file:
+    src: "{{ghq_root.stdout}}/github.com/{{remote_repository_path}}/.tmux.conf"
+    dest: "{{ansible_env.HOME}}/.tmux.conf"
+    state: link
