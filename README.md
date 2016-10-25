@@ -20,7 +20,7 @@ The directory structure of the repository where your tmux config is hosted must 
 Role Variables
 --------------
 
-* tmux_conf_ghq_executable: The executable path of ghq command. The default is "ghq".
+* ghq_executable: The executable path of ghq command. The default is "ghq".
 * remote_repository_path: The remote repository where your tmux config is hosted.
 
 Dependencies
@@ -36,7 +36,7 @@ Example Playbook
   roles:
   - role: suzuki-shunsuke.tmux-conf
     remote_repository_path: suzuki-shunsuke/tmux.conf
-    tmux_conf_ghq_executable: /home/vagrant/.go/bin/ghq
+    ghq_executable: /home/vagrant/.go/bin/ghq
 ```
 
 License
