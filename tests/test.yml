@@ -1,8 +1,13 @@
----
-- include: setup.yml
 - hosts: default
+  pre_tasks:
+    - name: remove .tmux.conf
+      file:
+        state: absent
+        path: "{{ansible_env.HOME}}/.tmux.conf"
   roles:
-  - suzuki-shunsuke.ghq-module
-  - role: ansible-tmux-conf
-    ghq_executable: "{{ansible_env.HOME}}/.go/bin/ghq"
-    remote_repository_path: suzuki-shunsuke/tmux.conf
+    - role: ansible-tmux-conf
+      tmux_conf_repo: "https://github.com/suzuki-shunsuke/tmux.conf"
+      tmux_conf_cloned_dest: "{{ansible_env.HOME}}/repos/src/github.com/suzuki-shunsuke/tmux.conf"
+      tmux_conf_version: mac
+      tmux_conf_links:
+        .tmux.conf: "{{ansible_env.HOME}}/.tmux.conf"

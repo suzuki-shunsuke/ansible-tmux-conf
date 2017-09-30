@@ -1,22 +1,16 @@
----
 # tasks file for tmux-conf
-- name: ghq root
-  shell: "{{ghq_executable}} root"
-  register: ghq_root
-  changed_when: false
-- name: Clone tmux config repository
-  ghq:
-    name: "{{remote_repository_path}}"
-    executable: "{{ghq_executable}}"
-- name: Check existing ~/.tmux.conf
-  stat:
-    path: "{{ansible_env.HOME}}/.tmux.conf"
-  register: st
-- name: Back up ~/.tmux.conf
-  shell: "mv {{ansible_env.HOME}}/.tmux.conf {{ansible_env.HOME}}/.tmux.conf.{{ansible_date_time.date}}-{{ansible_date_time.hour}}-{{ansible_date_time.minute}}-{{ansible_date_time.second}}"
-  when: st.stat.exists and not st.stat.islnk
-- name: Make symbolic links
+- name: mkdir repo's parent directory
   file:
-    src: "{{ghq_root.stdout}}/github.com/{{remote_repository_path}}/.tmux.conf"
-    dest: "{{ansible_env.HOME}}/.tmux.conf"
+    path: "{{tmux_conf_cloned_dest|dirname}}"
+    state: directory
+- name: Clone the tmux_conf repository
+  git:
+    repo: "{{tmux_conf_repo}}"
+    dest: "{{tmux_conf_cloned_dest}}"
+    version: "{{tmux_conf_version}}"
+- name: Make symbolic link
+  file:
+    src: "{{tmux_conf_cloned_dest}}/{{item.key}}"
+    dest: "{{item.value}}"
     state: link
+  with_dict: "{{tmux_conf_links}}"
