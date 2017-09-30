@@ -1,45 +1,39 @@
-tmux-conf
-=========
+# ansible-tmux-conf
 
 [![Build Status](https://travis-ci.org/suzuki-shunsuke/ansible-tmux-conf.svg?branch=master)](https://travis-ci.org/suzuki-shunsuke/ansible-tmux-conf)
 
-Install your tmux config hosted on the Github.
+ansible role to install tmux configurations
 
-Requirements
-------------
+## Requirements
 
-* [motemen/ghq](https://github.com/motemen/ghq)
+* git
 
-The directory structure of the repository where your tmux config is hosted must be in the following manner.
+## Role Variables
 
-```
-(repository root)/
-  .tmux.conf
-```
+name | required | default | description
+--- | --- | --- | ---
+tmux_conf_repo | yes | |
+tmux_conf_cloned_dest | yes | |
+tmux_conf_version | no | HEAD |
+tmux_conf_links | no | {} |
 
-Role Variables
---------------
+## Dependencies
 
-* ghq_executable: The executable path of ghq command. The default is "ghq".
-* remote_repository_path: The remote repository where your tmux config is hosted.
+Nothing.
 
-Dependencies
-------------
-
-* [suzuki-shunsuke.ghq-module](https://galaxy.ansible.com/suzuki-shunsuke/ghq-module/)
-
-Example Playbook
-----------------
+## Example Playbook
 
 ```yaml
 - hosts: servers
   roles:
   - role: suzuki-shunsuke.tmux-conf
-    remote_repository_path: suzuki-shunsuke/tmux.conf
-    ghq_executable: /home/vagrant/.go/bin/ghq
+    tmux_conf_repo: "https://github.com/suzuki-shunsuke/tmux.conf"
+    tmux_conf_cloned_dest: "{{ansible_env.HOME}}/repos/src/github.com/suzuki-shunsuke/tmux.conf"
+    tmux_conf_version: mac
+    tmux_conf_links:
+      tmux.conf: "{{ansible_env.HOME}}/.tmux.conf"
 ```
 
-License
--------
+## License
 
-MIT
+[MIT](LICENSE)
