@@ -8,6 +8,6 @@
     - role: ansible-tmux-conf
       tmux_conf_repo: "https://github.com/suzuki-shunsuke/tmux.conf"
       tmux_conf_cloned_dest: "{{ansible_env.HOME}}/repos/src/github.com/suzuki-shunsuke/tmux.conf"
-      tmux_conf_version: mac
       tmux_conf_links:
-        .tmux.conf: "{{ansible_env.HOME}}/.tmux.conf"
+        - src: "{{(ansible_os_family == 'Darwin')|ternary('mac', 'linux')}}_tmux.conf"
+          dest: "{{ansible_env.HOME}}/.tmux.conf"

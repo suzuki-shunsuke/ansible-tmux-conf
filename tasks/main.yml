@@ -10,7 +10,7 @@
     version: "{{tmux_conf_version}}"
 - name: Make symbolic link
   file:
-    src: "{{tmux_conf_cloned_dest}}/{{item.key}}"
-    dest: "{{item.value}}"
+    src: "{{tmux_conf_cloned_dest}}/{{item.src}}"
+    dest: "{{item.dest}}"
     state: link
-  with_dict: "{{tmux_conf_links}}"
+  with_items: "{{tmux_conf_links}}"
